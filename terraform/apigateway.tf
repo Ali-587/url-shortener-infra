@@ -6,7 +6,7 @@ resource "aws_apigatewayv2_api" "http_api" {
     allow_origins = ["*"]
     allow_methods = ["GET", "POST", "OPTIONS"]
     allow_headers = ["Content-Type"]
-    max_age        = 300
+    max_age       = 300
   }
 
   tags = {
