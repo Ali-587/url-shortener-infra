@@ -37,3 +37,23 @@ output "ssm_cloudfront_secret_parameter_name" {
   description = "SSM parameter name storing CloudFront secret header"
   value       = aws_ssm_parameter.cloudfront_secret.name
 }
+
+output "alerts_topic_arn" {
+  description = "SNS topic ARN for CloudWatch alarm notifications"
+  value       = aws_sns_topic.alerts.arn
+}
+
+output "backend_lambda_error_alarm_name" {
+  description = "Backend Lambda error alarm name"
+  value       = aws_cloudwatch_metric_alarm.backend_lambda_errors.alarm_name
+}
+
+output "authorizer_lambda_error_alarm_name" {
+  description = "Authorizer Lambda error alarm name"
+  value       = aws_cloudwatch_metric_alarm.authorizer_lambda_errors.alarm_name
+}
+
+variable "alarm_email" {
+  description = "Email address to receive CloudWatch alarm notifications"
+  type        = string
+}

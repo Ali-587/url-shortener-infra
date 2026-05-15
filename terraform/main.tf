@@ -10,3 +10,6 @@ data "archive_file" "lambda_placeholder" {
   output_path = "${path.module}/lambda-placeholder.zip"
 }
 
+locals {
+  name = "${var.project_name}-${var.environment}"
+}
