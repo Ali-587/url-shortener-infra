@@ -1,29 +1,29 @@
 variable "aws_region" {
-  description = "AWS region where resources will be created"
+  description = "AWS region for regional resources"
   type        = string
-  default     = "us-east-1"
+  default     = "eu-central-1"
 }
 
 variable "project_name" {
-  description = "Project name used for naming AWS resources"
+  description = "Project name"
   type        = string
   default     = "url-shortener"
 }
 
 variable "lambda_runtime" {
-  description = "Node.js runtime for Lambda"
+  description = "Node.js Lambda runtime"
   type        = string
   default     = "nodejs22.x"
 }
 
 variable "lambda_memory_size" {
-  description = "Lambda memory size in MB"
+  description = "Lambda memory size"
   type        = number
   default     = 256
 }
 
 variable "lambda_timeout" {
-  description = "Lambda timeout in seconds"
+  description = "Lambda timeout"
   type        = number
   default     = 10
 }
