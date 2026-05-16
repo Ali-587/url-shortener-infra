@@ -1,7 +1,7 @@
 data "aws_caller_identity" "current" {}
 
 locals {
-  name = "${var.env_vars.namepsace}-${var.env_vars.stage}"
+  name = "${var.env_vars.namespace}-${var.env_vars.stage}"
 }
 
 data "archive_file" "lambda_placeholder" {
