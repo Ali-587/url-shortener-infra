@@ -53,7 +53,3 @@ output "authorizer_lambda_error_alarm_name" {
   value       = aws_cloudwatch_metric_alarm.authorizer_lambda_errors.alarm_name
 }
 
-variable "alarm_email" {
-  description = "Email address to receive CloudWatch alarm notifications"
-  type        = string
-}

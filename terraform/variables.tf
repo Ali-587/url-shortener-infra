@@ -33,3 +33,8 @@ variable "environment" {
   type        = string
   default     = "dev"
 }
+
+variable "alarm_email" {
+  description = "Email address to receive CloudWatch alarm notifications"
+  type        = string
+}
