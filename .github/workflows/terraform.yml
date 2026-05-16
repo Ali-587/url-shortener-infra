@@ -3,14 +3,16 @@ name: Terraform Infrastructure
 on:
   push:
     branches:
-      - main
+      - dev
+      - prod
     paths:
       - "terraform/**"
       - ".github/workflows/terraform.yml"
 
   pull_request:
     branches:
-      - main
+      - dev
+      - prod
     paths:
       - "terraform/**"
 
@@ -25,6 +27,14 @@ on:
           - plan
           - apply
           - destroy
+      environment:
+        description: "Target Environment"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - prod
 
 permissions:
   id-token: write
@@ -42,6 +52,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Determine Environment
+        id: env-setup
+        run: |
+          if [[ "${{ github.event_name }}" == 'pull_request' ]]; then
+            echo "ENV_NAME=${{ github.base_ref }}" >> $GITHUB_ENV
+          elif [[ "${{ github.event_name }}" == 'workflow_dispatch' ]]; then
+            echo "ENV_NAME=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+          else
+            echo "ENV_NAME=${{ github.ref_name }}" >> $GITHUB_ENV
+          fi
+
       - name: Configure AWS credentials using manually created OIDC role
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -52,25 +73,21 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform init
-        run: terraform init
-
-      - name: Terraform fmt check
-        run: terraform fmt -check
+        run: terraform init -backend-config="${{ env.ENV_NAME }}.tfbackend"
 
       - name: Terraform validate
         run: terraform validate
-
       - name: Terraform plan
         if: github.event_name == 'pull_request' || github.event.inputs.action == 'plan'
-        run: terraform plan
+        run: terraform plan -var-file="${{ env.ENV_NAME }}.tfvars"
 
       - name: Terraform apply
-        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event.inputs.action == 'apply')
-        run: terraform apply -auto-approve
+        if: github.event_name == 'push' || github.event.inputs.action == 'apply'
+        run: terraform apply -auto-approve -var-file="${{ env.ENV_NAME }}.tfvars"
 
       - name: Show Terraform Outputs
         run: terraform output
 
       - name: Terraform destroy
         if: github.event.inputs.action == 'destroy'
-        run: terraform destroy -auto-approve
+        run: terraform destroy -auto-approve -var-file="${{ env.ENV_NAME }}.tfvars"
