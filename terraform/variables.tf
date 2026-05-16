@@ -28,11 +28,6 @@ variable "lambda_timeout" {
   default     = 10
 }
 
-variable "alarm_email" {
-  description = "Email address to receive CloudWatch alarm notifications"
-  type        = string
-}
-
 variable "environment" {
   description = "Environment name such as dev or prod"
   type        = string
