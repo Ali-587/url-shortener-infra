@@ -1,3 +1,8 @@
+variable "env_vars" {
+  type        = map(any)
+  description = "Env variables to be passed used for tagging"
+}
+
 variable "aws_region" {
   description = "AWS region for regional resources"
   type        = string
@@ -38,3 +43,4 @@ variable "alarm_email" {
   description = "Email address to receive CloudWatch alarm notifications"
   type        = string
 }
+
