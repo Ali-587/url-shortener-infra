@@ -81,3 +81,4 @@ resource "aws_lambda_permission" "api_gateway_authorizer" {
 
   source_arn = "${aws_apigatewayv2_api.http_api.execution_arn}/authorizers/${aws_apigatewayv2_authorizer.cloudfront_header_authorizer.id}"
 }
+
